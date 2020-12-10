@@ -569,3 +569,10 @@ typedef LoadingBuilder = Widget Function(
   BuildContext context,
   ImageChunkEvent event,
 );
+
+/// A type like [LoadingBuilder] , differently [index] is add to its params
+typedef LoadingCurrentIndexBuilder = Widget Function(
+  BuildContext context,
+  ImageChunkEvent event,
+  int index,
+);

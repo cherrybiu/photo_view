@@ -3,7 +3,7 @@ library photo_view_gallery;
 import 'package:flutter/widgets.dart';
 import 'package:photo_view/photo_view.dart'
     show
-        LoadingBuilder,
+        LoadingCurrentIndexBuilder,
         PhotoView,
         PhotoViewImageTapDownCallback,
         PhotoViewImageTapUpCallback,
@@ -153,8 +153,10 @@ class PhotoViewGallery extends StatefulWidget {
   /// [ScrollPhysics] for the internal [PageView]
   final ScrollPhysics scrollPhysics;
 
-  /// Mirror to [PhotoView.loadingBuilder]
-  final LoadingBuilder loadingBuilder;
+  /// While [imageProvider] is not resolved, [loadingBuilder] is called by [PhotoView]
+  /// into the screen, by default it is a centered [CircularProgressIndicator] and
+  /// the index of the currently loading image is passed
+  final LoadingCurrentIndexBuilder loadingBuilder;
 
   /// Mirror to [PhotoView.backgroundDecoration]
   final Decoration backgroundDecoration;
@@ -265,7 +267,7 @@ class _PhotoViewGalleryState extends State<PhotoViewGallery> {
         : PhotoView(
             key: ObjectKey(index),
             imageProvider: pageOption.imageProvider,
-            loadingBuilder: widget.loadingBuilder,
+            loadingBuilder: (context, imageChunkEvent) => widget.loadingBuilder(context, imageChunkEvent, index),
             backgroundDecoration: widget.backgroundDecoration,
             controller: pageOption.controller,
             scaleStateController: pageOption.scaleStateController,
